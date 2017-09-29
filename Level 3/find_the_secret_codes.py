@@ -1,5 +1,3 @@
-numTriples = lambda n : (n*(n-1)*(n-2))/6
-
 def answer(l):
     n = len(l)
     c = [0] * n
