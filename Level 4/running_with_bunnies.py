@@ -56,12 +56,8 @@ def negative_cycle(times):
 
 # Helper method to compute the power set of a list of indices.
 def powerset(iterable):
-    # s = list(iterable)
-    # return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
-    x = len(iterable)
-    masks = [1 << i for i in range(x)]
-    for i in range(1 << x):
-        yield [ss for mask, ss in zip(masks, iterable) if i & mask]
+    s = list(iterable)
+    return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
 
 print(sorted(powerset([1,2,3,4])))
 
