@@ -93,27 +93,44 @@ def array_to_ints(col):
 def answer(g):
     first_col = column_k(g, 0)
     m, n = len(g), len(g[0])
+    # if m > n:
+    #     g = [[row[i] for row in g] for i in range(len(g[0]))]
+    #     m, n = n, m
+
     g = [array_to_ints(column_k(g, i)) for i in range(n)]
-    dp = {}
+    # dp = {}
 
-    def answer_recursive(index, last_col):
-        if index == n:
-            return 1
+    dp = [[0] * (1 << (m + 1)) for _ in range(n)]
 
-        if (index, last_col) in dp:
-            return dp[(index, last_col)]
+    for a, b in past_states2(first_col):
+        dp[0][b] += 1
 
-        result = 0
-        for possible_next_col in range(1 << (m + 1)):
-            if check(last_col, possible_next_col, g, index, m):
-                result += answer_recursive(index + 1, possible_next_col)
-        dp[(index, last_col)] = result
-        return result
+    for i in range(1, n):
+        for j in range(1 << (m + 1)):
+            for k in range(1 << (m + 1)):
+                if(check(j, k, g, i, m)):
+                    dp[i][k] += dp[i - 1][j]
+    return sum(dp[n - 1])
 
-    result = 0
-    for starting_col in past_states2(first_col):
-        result += answer_recursive(1, starting_col[1])
-    return result
+
+    # def answer_recursive(index, last_col):
+    #     if index == n:
+    #         return 1
+    #
+    #     if (index, last_col) in dp:
+    #         return dp[(index, last_col)]
+    #
+    #     result = 0
+    #     for possible_next_col in range(1 << (m + 1)):
+    #         if check(last_col, possible_next_col, g, index, m):
+    #             result += answer_recursive(index + 1, possible_next_col)
+    #     dp[(index, last_col)] = result
+    #     return result
+    #
+    # result = 0
+    # for starting_col in past_states2(first_col):
+    #     result += answer_recursive(1, starting_col[1])
+    # return result
 
 def check(last_col, possible_next_col, g, index, m):
     return next_state((last_col, possible_next_col), m + 1) == g[index]
@@ -142,8 +159,7 @@ g3 = [[true, true, false, true, false, true, false, true, true, false],
 
 # expect 11567
 
-print(answer(g3))
-
+print(answer(g2))
 
 
 
