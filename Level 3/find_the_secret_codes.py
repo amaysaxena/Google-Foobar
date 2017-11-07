@@ -1,12 +1,11 @@
 def answer(l):
-    n = len(l)
-    c = [0] * n
+    factors = [0] * len(l)
     triples = 0
-    for k in range(n):
+    for k in range(len(l)):
         for j in range(k):
             if l[k] % l[j] == 0:
-                c[k] += 1
-                triples += c[j]
+                factors[k] += 1
+                triples += factors[j]
     return triples
 
 
